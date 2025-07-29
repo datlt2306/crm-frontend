@@ -170,6 +170,23 @@ export const TasksCreatePage = () => {
         return "Không xác định";
     }
   };
+  const handleOnFinish = (values: TaskFormValues) => {
+    const formattedAssignees = values.assignees?.map((id: string) => ({
+      userId: id,
+      response: "",
+      progress: 0,
+    }));
+
+    formProps?.onFinish?.({
+      ...values,
+      assignees: formattedAssignees,
+      stageId: searchParams.get("stageId") ?? null,
+      userIds: [],
+      complete: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  };
 
   return (
     <Modal
@@ -189,25 +206,7 @@ export const TasksCreatePage = () => {
           <Form
             {...formProps}
             layout="vertical"
-            onFinish={(values: TaskFormValues) => {
-              const formattedAssignees = values.assignees?.map(
-                (id: string) => ({
-                  userId: id,
-                  response: "",
-                  progress: 0,
-                })
-              );
-
-              formProps?.onFinish?.({
-                ...values,
-                assignees: formattedAssignees,
-                stageId: searchParams.get("stageId") ?? null,
-                userIds: [],
-                complete: false,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-              });
-            }}
+            onFinish={handleOnFinish}
             initialValues={{
               priority: "low",
               semester: defaultSemesterValue,
@@ -271,53 +270,6 @@ export const TasksCreatePage = () => {
                   />
                 </Form.Item>
               </div>
-
-              {/* AI Suggestions */}
-              {/* <div
-                style={{
-                  background: "#f0f8ff",
-                  border: "1px solid #d6e4ff",
-                  borderRadius: 8,
-                  padding: 12,
-                  marginBottom: 24,
-                }}
-              >
-                <Space size="small" wrap>
-                  <StarOutlined style={{ color: "#1890ff" }} />
-                  <Text style={{ color: "#1890ff" }}>Ask Brain to</Text>
-                  <Button
-                    type="link"
-                    size="small"
-                    style={{ padding: 0, height: "auto" }}
-                  >
-                    write a description
-                  </Button>
-                  <Text style={{ color: "#1890ff" }}>·</Text>
-                  <Button
-                    type="link"
-                    size="small"
-                    style={{ padding: 0, height: "auto" }}
-                  >
-                    create a summary
-                  </Button>
-                  <Text style={{ color: "#1890ff" }}>·</Text>
-                  <Button
-                    type="link"
-                    size="small"
-                    style={{ padding: 0, height: "auto" }}
-                  >
-                    find similar tasks
-                  </Button>
-                  <Text style={{ color: "#1890ff" }}>·</Text>
-                  <Button
-                    type="link"
-                    size="small"
-                    style={{ padding: 0, height: "auto" }}
-                  >
-                    or ask about this task
-                  </Button>
-                </Space>
-              </div> */}
 
               {/* Task Properties Grid */}
               <div style={{ marginBottom: 32 }}>
@@ -774,11 +726,6 @@ export const TasksCreatePage = () => {
                                 width: "100%",
                               }}
                               size="small"
-                              // suffix={
-                              //   <CalendarOutlined
-                              //     style={{ color: "#8c8c8c" }}
-                              //   />
-                              // }
                             />
                           </Form.Item>
 

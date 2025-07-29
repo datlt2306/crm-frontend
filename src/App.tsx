@@ -1,14 +1,8 @@
-import {
-  Refine,
-  GitHubBanner,
-  WelcomePage,
-  Authenticated,
-} from "@refinedev/core";
+import { Refine, Authenticated } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
-  AuthPage,
   ErrorComponent,
   useNotificationProvider,
   ThemedLayoutV2,
@@ -16,7 +10,7 @@ import {
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
-import dataProvider from "@refinedev/simple-rest";
+import { dataProvider } from "@/providers/dataProvider";
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router";
 import routerBindings, {
@@ -25,24 +19,12 @@ import routerBindings, {
   UnsavedChangesNotifier,
   DocumentTitleHandler,
 } from "@refinedev/react-router";
-import {
-  BlogPostList,
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryList,
-  CategoryCreate,
-  CategoryEdit,
-  CategoryShow,
-} from "./pages/categories";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Header } from "./components/header";
 import { LoginPage } from "./pages/login";
 import { Register } from "./pages/register";
 import { ForgotPassword } from "./pages/forgotPassword";
-import { authProvider } from "./authProvider";
+import { authProvider } from "./providers/authProvider";
 import {
   ProductCreate,
   ProductEdit,
@@ -66,7 +48,9 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("http://localhost:3000")}
+                dataProvider={dataProvider(
+                  import.meta.env.VITE_BE_API_URL || "http://localhost:4000/api"
+                )}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
@@ -113,26 +97,6 @@ function App() {
                       icon: <ProductOutlined />,
                     },
                   },
-                  //   {
-                  //     name: "blog_posts",
-                  //     list: "/blog-posts",
-                  //     create: "/blog-posts/create",
-                  //     edit: "/blog-posts/edit/:id",
-                  //     show: "/blog-posts/show/:id",
-                  //     meta: {
-                  //       canDelete: true,
-                  //     },
-                  //   },
-                  //   {
-                  //     name: "categories",
-                  //     list: "/categories",
-                  //     create: "/categories/create",
-                  //     edit: "/categories/edit/:id",
-                  //     show: "/categories/show/:id",
-                  //     meta: {
-                  //       canDelete: true,
-                  //     },
-                  //   },
                 ]}
                 options={{
                   syncWithLocation: true,
@@ -154,13 +118,11 @@ function App() {
                         >
                           <Outlet />
                         </ThemedLayoutV2>
-                      // </Authenticated>
+                        //{" "}
+                      </Authenticated>
                     }
                   >
-                    <Route
-                      index
-                      element={<NavigateToResource resource="tasks" />}
-                    />
+                    <Route element={<NavigateToResource resource="tasks" />} />
                     <Route path="/users">
                       <Route index element={<UserList />} />
                       <Route path="edit/:id" element={<UserEdit />} />
@@ -185,18 +147,6 @@ function App() {
                       <Route path="edit/:id" element={<UserEdit />} />
                       <Route path="show/:id" element={<UserShow />} />
                     </Route>
-                    {/* <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
-                    </Route> */}
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
@@ -206,7 +156,8 @@ function App() {
                         fallback={<Outlet />}
                       >
                         <NavigateToResource />
-                      // </Authenticated>
+                        //{" "}
+                      </Authenticated>
                     }
                   >
                     <Route path="/login" element={<LoginPage />} />
