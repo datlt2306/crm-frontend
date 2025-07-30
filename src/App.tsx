@@ -46,135 +46,129 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <AntdApp>
-            <DevtoolsProvider>
-              <Refine
-                dataProvider={dataProvider(
-                  import.meta.env.VITE_BE_API_URL || "http://localhost:4000/api"
-                )}
-                notificationProvider={useNotificationProvider}
-                routerProvider={routerBindings}
-                authProvider={authProvider}
-                resources={[
-                  {
-                    name: "users",
-                    list: "/users",
-                    edit: "/users/edit/:id",
-                    meta: {
-                      // canDelete: true,
-                      icon: <UserOutlined />,
-                    },
+            <Refine
+              dataProvider={dataProvider(
+                import.meta.env.VITE_BE_API_URL || "http://localhost:4000/api"
+              )}
+              notificationProvider={useNotificationProvider}
+              routerProvider={routerBindings}
+              authProvider={authProvider}
+              resources={[
+                {
+                  name: "users",
+                  list: "/users",
+                  edit: "/users/edit/:id",
+                  meta: {
+                    // canDelete: true,
+                    icon: <UserOutlined />,
                   },
-                  {
-                    name: "products",
-                    list: "/products",
-                    create: "/products/create",
-                    edit: "/products/edit/:id",
-                    show: "/products/show/:id",
-                    meta: {
-                      canDelete: true,
-                      icon: <ProductOutlined />,
-                    },
+                },
+                {
+                  name: "products",
+                  list: "/products",
+                  create: "/products/create",
+                  edit: "/products/edit/:id",
+                  show: "/products/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <ProductOutlined />,
                   },
-                  {
-                    name: "tasks",
-                    list: "/tasks",
-                    create: "/tasks/new",
-                    edit: "/tasks/edit/:id",
-                    show: "/tasks/show/:id",
-                    meta: {
-                      canDelete: true,
-                      icon: <ProductOutlined />,
-                    },
+                },
+                {
+                  name: "tasks",
+                  list: "/tasks",
+                  create: "/tasks/new",
+                  edit: "/tasks/edit/:id",
+                  show: "/tasks/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <ProductOutlined />,
                   },
-                  {
-                    name: "users",
-                    list: "/users",
-                    create: "/users/create",
-                    edit: "/users/edit/:id",
-                    show: "/users/show/:id",
-                    meta: {
-                      canDelete: true,
-                      icon: <ProductOutlined />,
-                    },
+                },
+                {
+                  name: "users",
+                  list: "/users",
+                  create: "/users/create",
+                  edit: "/users/edit/:id",
+                  show: "/users/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <ProductOutlined />,
                   },
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  useNewQueryKeys: true,
-                  projectId: "eA9seV-MdQw4Z-qzamgL",
-                }}
-              >
-                <Routes>
-                  <Route
-                    element={
-                      <Authenticated
-                        key="authenticated-inner"
-                        fallback={<CatchAllNavigate to="/login" />}
+                },
+              ]}
+              options={{
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
+                useNewQueryKeys: true,
+                projectId: "eA9seV-MdQw4Z-qzamgL",
+              }}
+            >
+              <Routes>
+                <Route
+                  element={
+                    <Authenticated
+                      key="authenticated-inner"
+                      fallback={<CatchAllNavigate to="/login" />}
+                    >
+                      <ThemedLayoutV2
+                        Header={Header}
+                        Sider={(props) => <ThemedSiderV2 {...props} fixed />}
                       >
-                        <ThemedLayoutV2
-                          Header={Header}
-                          Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-                        >
-                          <Outlet />
-                        </ThemedLayoutV2>
-                        //{" "}
-                      </Authenticated>
-                    }
-                  >
-                    <Route element={<NavigateToResource resource="tasks" />} />
-                    <Route path="/users">
-                      <Route index element={<UserList />} />
-                      <Route path="edit/:id" element={<UserEdit />} />
-                    </Route>
-                    <Route path="/products">
-                      <Route index element={<ProductList />} />
-                      <Route path="create" element={<ProductCreate />} />
-                      <Route path="edit/:id" element={<ProductEdit />} />
-                      <Route path="show/:id" element={<ProductShow />} />
-                    </Route>
-                    <Route path="/tasks">
-                      <Route index element={<TasksListPage />} />
-                      <Route path="new" element={<TasksCreatePage />} />
-                      <Route path="edit/:id" element={<TasksEditPage />} />
-                      {/*
+                        <Outlet />
+                      </ThemedLayoutV2>
+                      //{" "}
+                    </Authenticated>
+                  }
+                >
+                  <Route element={<NavigateToResource resource="tasks" />} />
+                  <Route path="/users">
+                    <Route index element={<UserList />} />
+                    <Route path="edit/:id" element={<UserEdit />} />
+                  </Route>
+                  <Route path="/products">
+                    <Route index element={<ProductList />} />
+                    <Route path="create" element={<ProductCreate />} />
+                    <Route path="edit/:id" element={<ProductEdit />} />
+                    <Route path="show/:id" element={<ProductShow />} />
+                  </Route>
+                  <Route path="/tasks">
+                    <Route index element={<TasksListPage />} />
+                    <Route path="new" element={<TasksCreatePage />} />
+                    <Route path="edit/:id" element={<TasksEditPage />} />
+                    {/*
 
                       <Route path="show/:id" element={<TaskShow />} /> */}
-                    </Route>
-                    <Route path="/users">
-                      <Route index element={<UserList />} />
-                      <Route path="create" element={<UserCreate />} />
-                      <Route path="edit/:id" element={<UserEdit />} />
-                      <Route path="show/:id" element={<UserShow />} />
-                    </Route>
-                    <Route path="*" element={<ErrorComponent />} />
                   </Route>
-                  <Route
-                    element={
-                      <Authenticated
-                        key="authenticated-outer"
-                        fallback={<Outlet />}
-                      >
-                        <NavigateToResource />
-                        //{" "}
-                      </Authenticated>
-                    }
-                  >
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
-                      path="/forgot-password"
-                      element={<ForgotPassword />}
-                    />
+                  <Route path="/users">
+                    <Route index element={<UserList />} />
+                    <Route path="create" element={<UserCreate />} />
+                    <Route path="edit/:id" element={<UserEdit />} />
+                    <Route path="show/:id" element={<UserShow />} />
                   </Route>
-                </Routes>
+                  <Route path="*" element={<ErrorComponent />} />
+                </Route>
+                <Route
+                  element={
+                    <Authenticated
+                      key="authenticated-outer"
+                      fallback={<Outlet />}
+                    >
+                      <NavigateToResource />
+                      //{" "}
+                    </Authenticated>
+                  }
+                >
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                </Route>
+              </Routes>
 
-                <RefineKbar />
-                <UnsavedChangesNotifier />
-                <DocumentTitleHandler />
-              </Refine>
-              <DevtoolsPanel />
-            </DevtoolsProvider>
+              <RefineKbar />
+              <UnsavedChangesNotifier />
+              <DocumentTitleHandler />
+            </Refine>
           </AntdApp>
         </ColorModeContextProvider>
       </RefineKbarProvider>
