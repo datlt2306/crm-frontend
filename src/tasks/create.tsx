@@ -34,6 +34,7 @@ import { useMemo, useState } from "react";
 import type { SelectProps } from "antd";
 import type { TaskFormValues } from "../types/Task";
 import { debounce } from "lodash";
+import { prioritySelectProps } from "@/utilities/constant";
 
 const { Text, Title } = Typography;
 const { Sider, Content } = Layout;
@@ -105,16 +106,8 @@ export const TasksCreatePage = () => {
     return `${year}-${season}`;
   }, []);
 
-  const prioritySelectProps = {
-    options: [
-      { label: "Low", value: "low" },
-      { label: "Medium", value: "medium" },
-      { label: "High", value: "high" },
-    ],
-  };
-
   const { data: users } = useList({
-    resource: "users",
+    resource: "users/all",
   });
 
   const userSelectProps: SelectProps<any> = {
@@ -774,7 +767,7 @@ export const TasksCreatePage = () => {
                 <Button
                   onClick={() => {
                     close();
-                    list("tasks", "replace");
+                    list("activities", "replace");
                   }}
                 >
                   Hủy
@@ -788,7 +781,7 @@ export const TasksCreatePage = () => {
         </Content>
 
         {/* Activity Sidebar */}
-        <Sider
+        {/* <Sider
           width={320}
           style={{ background: "#fafafa", borderLeft: "1px solid #f0f0f0" }}
         >
@@ -854,7 +847,7 @@ export const TasksCreatePage = () => {
               </div>
             </div>
           </div>
-        </Sider>
+        </Sider> */}
       </Layout>
     </Modal>
   );

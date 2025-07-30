@@ -75,11 +75,11 @@ function App() {
                   },
                 },
                 {
-                  name: "tasks",
-                  list: "/tasks",
-                  create: "/tasks/new",
-                  edit: "/tasks/edit/:id",
-                  show: "/tasks/show/:id",
+                  name: "activities",
+                  list: "/activities",
+                  create: "/activities/new",
+                  edit: "/activities/edit/:id",
+                  show: "/activities/show/:id",
                   meta: {
                     canDelete: true,
                     icon: <ProductOutlined />,
@@ -132,7 +132,7 @@ function App() {
                     <Route path="edit/:id" element={<ProductEdit />} />
                     <Route path="show/:id" element={<ProductShow />} />
                   </Route>
-                  <Route path="/tasks">
+                  <Route path="/activities">
                     <Route index element={<TasksListPage />} />
                     <Route path="new" element={<TasksCreatePage />} />
                     <Route path="edit/:id" element={<TasksEditPage />} />
