@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/core";
 
 interface Props {
-  id: number;
+  id: string;
   data?: UseDraggableArguments["data"];
 }
 
