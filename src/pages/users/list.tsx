@@ -1,6 +1,13 @@
 import React from "react";
-import { List, useTable, EditButton, DeleteButton } from "@refinedev/antd";
-import { Table } from "antd";
+import {
+  List,
+  useTable,
+  EditButton,
+  DeleteButton,
+  CreateButton,
+} from "@refinedev/antd";
+import { Table, Button } from "antd";
+import useNotification from "antd/es/notification/useNotification";
 
 interface IUser {
   id: string;
@@ -12,48 +19,48 @@ interface IUser {
 }
 
 export const UserList: React.FC = () => {
-  // Lấy user từ localStorage
+  const [notificationApi] = useNotification();
+
+  // Lấy role từ localStorage
   const userStr =
     typeof window !== "undefined" ? localStorage.getItem("user") : null;
-  let role = null;
+  let role: string | null = null;
   if (userStr) {
     try {
       const user = JSON.parse(userStr);
-      role = user.role;
+      role = user?.data?.role;
     } catch (e) {
       role = null;
     }
   }
 
-  if (role !== "CNBM") {
-    return (
-      <div
-        style={{
-          padding: 24,
-          textAlign: "center",
-          color: "#d4380d",
-          fontWeight: 500,
-        }}
-      >
-        Bạn không có quyền truy cập chức năng này.
-      </div>
-    );
-  }
-
   const { tableProps } = useTable<IUser>({ resource: "users/all" });
 
+  const handleNotCNBM = () => {
+    notificationApi.open({
+      type: "error",
+      message: "Bạn không phải là CNBM",
+    });
+  };
+
+  
   return (
-    <List>
+    <List title="Danh Sách Giảng Viên"
+      headerButtons={
+        role === "CNBM" ? (
+          <CreateButton />
+        ) : (
+          <Button onClick={handleNotCNBM}>Tạo mới</Button>
+        )
+      }
+    >
       <Table
         {...tableProps}
         rowKey="id"
         columns={[
+          
           {
-            title: "ID",
-            dataIndex: "id",
-          },
-          {
-            title: "Tên",
+            title: "Họ và Tên",
             dataIndex: "name",
           },
           {
@@ -76,12 +83,13 @@ export const UserList: React.FC = () => {
           {
             title: "Actions",
             dataIndex: "actions",
-            render: (_: any, record: IUser) => (
-              <div style={{ display: "flex", gap: 8 }}>
-                <EditButton recordItemId={record.id} />
-                <DeleteButton recordItemId={record.id} />
-              </div>
-            ),
+            render: (_: any, record: IUser) =>
+              role === "CNBM" ? (
+                <div style={{ display: "flex", gap: 8 }}>
+                  <EditButton recordItemId={record.id} />
+                  <DeleteButton recordItemId={record.id} />
+                </div>
+              ) : null,
           },
         ]}
       />

@@ -36,6 +36,7 @@ const TasksListPage = ({ children }: React.PropsWithChildren) => {
     resource: 'activities'
     // pagination: { current: 1, pageSize: 100 }
   })
+
   const { data: stages, isLoading: isLoadingStages } = useList<
     IStage,
     HttpError
