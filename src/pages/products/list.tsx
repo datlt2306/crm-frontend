@@ -13,7 +13,7 @@ export const SemestersList = () => {
   });
 
   return (
-    <List title="Học Kỳ">
+    <List title="Học Kỳ" >
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="name" title={"Học Kỳ"} />
         <Table.Column dataIndex="description" title={"Mô tả"} />
