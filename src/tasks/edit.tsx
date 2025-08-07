@@ -21,20 +21,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import { TaskFormValues } from "../types/Task";
 import { debounce } from "lodash";
 
-interface ISemester {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-  status: string;
-  blocks: Block[];
-}
-
-interface Block {
-  name: string;
-}
-
 export const TasksEditPage = () => {
   const { list } = useNavigation();
   const { formProps, modalProps, close } = useModalForm({
@@ -42,6 +28,9 @@ export const TasksEditPage = () => {
     defaultVisible: true,
     meta: {},
   });
+
+  console.log(formProps);
+
   const form = formProps.form;
 
   // Hàm xác định kỳ học dựa trên tháng
@@ -102,7 +91,7 @@ export const TasksEditPage = () => {
   }, []);
 
   const { data: users } = useList({
-    resource: "users",
+    resource: "users/all",
   });
 
   const userSelectProps: SelectProps<any> = {
@@ -119,6 +108,7 @@ export const TasksEditPage = () => {
       { label: "Low", value: "low" },
       { label: "Medium", value: "medium" },
       { label: "High", value: "high" },
+      { label: "Urgent", value: "urgent" },
     ],
   };
 
@@ -138,7 +128,7 @@ export const TasksEditPage = () => {
 
   const debounceFetcher = useMemo(() => debounce(fetchUsers, 400), []);
   useEffect(() => {
-    fetchUsers(""); // nạp tất cả user để hiển thị được assignee đã lưu
+    fetchUsers("");
   }, []);
 
   return (
@@ -146,7 +136,7 @@ export const TasksEditPage = () => {
       {...modalProps}
       onCancel={() => {
         close();
-        list("tasks", "replace");
+        list("activities", "replace");
       }}
       title="Chỉnh sửa công việc"
       width={720}
@@ -169,6 +159,12 @@ export const TasksEditPage = () => {
         }}
         initialValues={{
           ...formProps.initialValues,
+          startTime: formProps.initialValues?.startTime
+            ? formProps.initialValues.startTime.slice(0, 10)
+            : undefined,
+          endTime: formProps.initialValues?.endTime
+            ? formProps.initialValues.endTime.slice(0, 10)
+            : undefined,
           assignees: formProps.initialValues?.assignees?.map(
             (a: any) => a.userId
           ),
@@ -203,7 +199,7 @@ export const TasksEditPage = () => {
         <Card size="small" title="Thông tin cơ bản">
           <Form.Item
             label="Tiêu đề công việc"
-            name="title"
+            name="name"
             rules={[{ required: true }]}
           >
             <Input placeholder="Nhập tiêu đề..." />
@@ -225,7 +221,7 @@ export const TasksEditPage = () => {
             <Col span={8}>
               <Form.Item
                 label="Ngày bắt đầu"
-                name="startDate"
+                name="startTime"
                 rules={[{ required: true }]}
               >
                 <Input type="date" />
@@ -234,7 +230,7 @@ export const TasksEditPage = () => {
             <Col span={8}>
               <Form.Item
                 label="Ngày kết thúc"
-                name="endDate"
+                name="endTime"
                 rules={[{ required: true }]}
               >
                 <Input type="date" />
@@ -263,7 +259,7 @@ export const TasksEditPage = () => {
             <Col span={12}>
               <Form.Item
                 label="Người thực hiện"
-                name="assignees"
+                name="participants"
                 rules={[{ required: true }]}
               >
                 <Select
@@ -297,7 +293,7 @@ export const TasksEditPage = () => {
             <Col span={12}>
               <Form.Item
                 label="Đường dẫn tài liệu"
-                name="link"
+                name="file.fileUrl"
                 rules={[{ type: "url", message: "URL không hợp lệ" }]}
               >
                 <Input placeholder="https://example.com/tailieu" />
