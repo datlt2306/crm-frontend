@@ -1,5 +1,4 @@
 import { Refine, Authenticated } from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
@@ -26,11 +25,11 @@ import { Register } from "./pages/register";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { authProvider } from "./providers/authProvider";
 import {
-  ProductCreate,
-  ProductEdit,
-  ProductList,
-  ProductShow,
-} from "./pages/products";
+  SemestersCreate,
+  SemestersList,
+  SemestersShow,
+  SemesterstEdit,
+} from "./pages/semester";
 import { ProductOutlined, UserOutlined } from "@ant-design/icons";
 import TasksListPage from "./tasks";
 import { TasksCreatePage } from "./tasks/create";
@@ -55,23 +54,16 @@ function App() {
               authProvider={authProvider}
               resources={[
                 {
-                  name: "users",
-                  list: "/users",
-                  edit: "/users/edit/:id",
-                  meta: {
-                    // canDelete: true,
-                    icon: <UserOutlined />,
-                  },
-                },
-                {
-                  name: "products",
-                  list: "/products",
-                  create: "/products/create",
-                  edit: "/products/edit/:id",
-                  show: "/products/show/:id",
+                  name: "semesters",
+                  list: "/semesters",
+                  create: "/semesters/create",
+                  edit: "/semesters/edit/:id",
+                  show: "/semesters/show/:id",
                   meta: {
                     canDelete: true,
                     icon: <ProductOutlined />,
+
+                    label: "Kỳ học",
                   },
                 },
                 {
@@ -93,7 +85,8 @@ function App() {
                   show: "/users/show/:id",
                   meta: {
                     canDelete: true,
-                    icon: <ProductOutlined />,
+                    icon: <UserOutlined />,
+                    label: "Giảng viên"
                   },
                 },
               ]}
@@ -126,11 +119,11 @@ function App() {
                     <Route index element={<UserList />} />
                     <Route path="edit/:id" element={<UserEdit />} />
                   </Route>
-                  <Route path="/products">
-                    <Route index element={<ProductList />} />
-                    <Route path="create" element={<ProductCreate />} />
-                    <Route path="edit/:id" element={<ProductEdit />} />
-                    <Route path="show/:id" element={<ProductShow />} />
+                  <Route path="/semesters">
+                    <Route index element={<SemestersList />} />
+                    <Route path="create" element={<SemestersCreate />} />
+                    <Route path="edit/:id" element={<SemesterstEdit />} />
+                    <Route path="show/:id" element={<SemestersShow />} />
                   </Route>
                   <Route path="/activities">
                     <Route index element={<TasksListPage />} />
