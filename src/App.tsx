@@ -29,7 +29,7 @@ import {
   SemestersList,
   SemestersShow,
   SemesterstEdit,
-} from "./pages/products";
+} from "./pages/semester";
 import { ProductOutlined, UserOutlined } from "@ant-design/icons";
 import TasksListPage from "./tasks";
 import { TasksCreatePage } from "./tasks/create";
